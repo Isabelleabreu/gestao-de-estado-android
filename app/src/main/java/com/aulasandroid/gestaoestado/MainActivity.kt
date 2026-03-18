@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import com.aulasandroid.gestaoestado.calculos.calcularJuros
 import com.aulasandroid.gestaoestado.calculos.calcularMontante
 import com.aulasandroid.gestaoestado.componentes.CaixaDeEntrada
+import com.aulasandroid.gestaoestado.componentes.CardResultado
 import com.aulasandroid.gestaoestado.ui.theme.GestaoEstadoTheme
 
 class MainActivity : ComponentActivity() {
@@ -58,6 +59,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun JurosScreen(modifier: Modifier = Modifier) {
+    val corTema = Color(136, 38, 199, 255)
+
     var capital by remember {
         mutableStateOf("")
     }
@@ -85,7 +88,7 @@ fun JurosScreen(modifier: Modifier = Modifier) {
             Column(
                 modifier = Modifier.fillMaxWidth()
                     .height(100.dp)
-                    .background(color = Color(136, 38, 199, 255))
+                    .background(color = corTema)
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -124,42 +127,40 @@ fun JurosScreen(modifier: Modifier = Modifier) {
                             fontWeight = FontWeight.Bold
                         )
 
-//                        OutlinedTextField(
-//                            value = capital,
-//                            onValueChange = { capital = it },
-//                            modifier = Modifier.fillMaxWidth(),
-//                            label = { Text(text = "Valor investimento") },
-//                            placeholder = { Text(text = "Quanto deseja investir?") },
-//                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
-//                        )
-
-
                         CaixaDeEntrada(
                             label = "Valor investimento",
                             placeholder = "Quanto deseja investir",
                             keyboardType = KeyboardType.Decimal,
-
-                            modifier = Modifier,
-                            value = capital
+                            modifier = Modifier.fillMaxWidth(),
+                            corTema = corTema,
+                            value = capital,
+                            atualizarValor = {
+                                capital = it
+                            }
                         )
 
-
-                        OutlinedTextField(
+                        CaixaDeEntrada(
+                            label = "Taxa de juros mensal",
+                            placeholder = "Qual a taxa de juros mensal?",
+                            keyboardType = KeyboardType.Decimal,
+                            modifier = Modifier.fillMaxWidth(),
+                            corTema = corTema,
                             value = taxa,
-                            onValueChange = { taxa = it },
-                            modifier = Modifier.fillMaxWidth(),
-                            label = { Text(text = "Taxa de juros mensal") },
-                            placeholder = { Text(text = "Qual a taxa de juros mensal?") },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                            atualizarValor = {
+                                taxa = it
+                            }
                         )
 
-                        OutlinedTextField(
-                            value = tempo,
-                            onValueChange = { tempo = it },
+                        CaixaDeEntrada(
+                            label = "Período em meses",
+                            placeholder = "Qual o tempo em meses?",
+                            keyboardType = KeyboardType.Decimal,
                             modifier = Modifier.fillMaxWidth(),
-                            label = { Text(text = "Período em meses") },
-                            placeholder = { Text(text = "Qual o tempo em meses?") },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                            corTema = corTema,
+                            value = tempo,
+                            atualizarValor = {
+                                tempo = it
+                            }
                         )
 
                         Button(
@@ -189,68 +190,9 @@ fun JurosScreen(modifier: Modifier = Modifier) {
                 }
 
 
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFF329F6B)
-                    ),
-                    elevation = CardDefaults.cardElevation(4.dp)
-                ) {
-                    Column (
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                        modifier = Modifier.fillMaxWidth()
-                            .padding(24.dp)
-                    ) {
-                        Text(
-                            text = "Resultado",
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White,
-                            fontSize = 28.sp,
-                            textAlign = TextAlign.Start
-                        )
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            Text(
-                                text = "Juros",
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                fontSize = 24.sp,
-                                textAlign = TextAlign.Start
-                            )
-
-                            Text(
-                                text = "$juros",
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                fontSize = 24.sp
-                            )
-                        }
+                CardResultado(juros = juros, montante = montante)
 
 
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            Text(
-                                text = "Montante",
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                fontSize = 24.sp,
-                                textAlign = TextAlign.Start
-                            )
-
-                            Text(
-                                text = "$montante",
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                fontSize = 24.sp
-                            )
-                        }
-                    }
-                }
             }
         }
     }
